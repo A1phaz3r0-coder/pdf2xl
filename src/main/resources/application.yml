@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: pdf2Xl
+  datasource:
+    platform: mysql
+    url: jdbc:mysql://localhost:3306/resultpdf
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
+      #update,create-drop,create
+    show-sql: false
+    properties:
+      hibernate.jdbc.batch_size: 20
+      hibernate.cache.use_query_cache: false
+      hibernate.cache.use_second_level_cache: false
+      hibernate.cache.use_structured_entries: false
+      hibernate.cache.use_minimal_puts: false

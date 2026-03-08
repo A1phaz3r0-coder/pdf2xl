@@ -33,6 +33,8 @@ dependencies {
     // Source: https://mvnrepository.com/artifact/technology.tabula/tabula
     implementation("technology.tabula:tabula:1.0.5")
     implementation("org.apache.commons:commons-lang3:3.20.0")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    implementation("com.mysql:mysql-connector-j:9.5.0")
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
     testImplementation("org.springframework.boot:spring-boot-starter-data-rest-test")

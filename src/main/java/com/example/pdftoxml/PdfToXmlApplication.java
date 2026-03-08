@@ -9,11 +9,6 @@ public class PdfToXmlApplication {
 
     static void main(String[] args) {
         SpringApplication.run(PdfToXmlApplication.class, args);
-        try {
-            PDFUtils.read();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
     }
 
 }

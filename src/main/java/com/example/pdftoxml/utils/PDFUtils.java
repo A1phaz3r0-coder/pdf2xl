@@ -3,6 +3,8 @@ package com.example.pdftoxml.utils;
 import com.example.pdftoxml.entities.PDFRecord;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.pdfbox.pdmodel.PDDocument;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.ResourceUtils;
 import technology.tabula.ObjectExtractor;
 import technology.tabula.Page;
@@ -17,14 +19,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PDFUtils {
+
+    private static final Logger LOG = LoggerFactory.getLogger(PDFUtils.class);
+
     private enum POSITION {
         S_NO, CLASS, ROLL, APPNO, CANDIDATE_NAME, GENDER, CAT, DOMICILE, TOT_MRK, RESULT, AIRANK
     }
 
-    public static void read() throws FileNotFoundException {
+    public static List<PDFRecord> read(final String fileName) throws FileNotFoundException {
         // Path to your PDF file
 //        File pdfFile = new File("sample_data.pdf");
-        File pdfFile = ResourceUtils.getFile("classpath:pdf/202602271490813983.pdf");
+        final File pdfFile = ResourceUtils.getFile("classpath:pdf/" + fileName);
 
         try (PDDocument document = PDDocument.load(pdfFile)) {
             ObjectExtractor extractor = new ObjectExtractor(document);
@@ -37,10 +42,11 @@ public class PDFUtils {
             int i = 0;
             boolean isLimited = false;
             while (pageIterator.hasNext()) {
-                if(i == 2 && isLimited) {
+                if (i == 2 && isLimited) {
                     break;
                 }
                 i++;
+                LOG.info("!!Processing {} page!!", i);
                 Page page = pageIterator.next();
                 List<Table> tables = sea.extract(page);
                 System.out.println("table size: " + tables.size());
@@ -49,26 +55,28 @@ public class PDFUtils {
 
             // Extract tables using the "Spreadsheet" algorithm
             // (Works best for tables with visible grid lines)
-
+            return pdfRecords;
 
         } catch (Exception e) {
             System.err.println("Error reading PDF: " + e.getMessage());
             e.printStackTrace();
         }
+        return new ArrayList<>();
     }
 
-    private static void readTables(final List<Table> tables, final List<PDFRecord> pdfRecords) {
+    public static void readTables(final List<Table> tables, final List<PDFRecord> pdfRecords) {
         int i = 0;
         for (Table table : tables) {
             List<List<RectangularTextContainer>> rows = table.getRows();
             for (List<RectangularTextContainer> cells : rows) {
-                if(i==0) {
+                if (i == 0) {
                     i++;
                     continue;
                 }
                 final PDFRecord record = new PDFRecord();
                 record.setSerialNo(Long.parseLong(StringUtils.defaultIfBlank(cells.get(POSITION.S_NO.ordinal()).getText(), "0")));
                 record.setRollNo(Long.parseLong(StringUtils.defaultIfBlank(cells.get(POSITION.ROLL.ordinal()).getText(), "0")));
+                record.setStandard(StringUtils.defaultIfBlank(cells.get(POSITION.CLASS.ordinal()).getText(), ""));
                 record.setAppNo(Long.parseLong(StringUtils.defaultIfBlank(cells.get(POSITION.APPNO.ordinal()).getText(), "0")));
                 record.setCandidateName(StringUtils.defaultIfBlank(cells.get(POSITION.CANDIDATE_NAME.ordinal()).getText(), StringUtils.EMPTY));
                 record.setGender(StringUtils.defaultIfBlank(cells.get(POSITION.GENDER.ordinal()).getText(), StringUtils.EMPTY));
