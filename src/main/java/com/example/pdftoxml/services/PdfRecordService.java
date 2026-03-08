@@ -37,4 +37,8 @@ public class PdfRecordService {
         return pdfRecordRepository.count();
     }
 
+    public List<PDFRecord> findAllByDomicile(final String domicile) {
+        return pdfRecordRepository.findByDomicile(domicile);
+    }
+
 }
