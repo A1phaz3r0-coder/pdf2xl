@@ -45,7 +45,7 @@ public class DBSeedingService {
         try {
             this.readAndSaveToDB();
             LOG.info("All records saved!");
-            LOG.info("Done seeding now!");
+            LOG.info("Done seeding now! yay!");
         } catch (final Exception e) {
             LOG.error("following error occurred during saving records: {}", e.getMessage(), e);
         }
