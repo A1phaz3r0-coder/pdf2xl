@@ -4,6 +4,7 @@ import com.example.pdftoxml.entities.PDFRecord;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,6 +54,11 @@ public class ExcelService {
             row.createCell(POSITION.CLASS.ordinal()).setCellValue(pdfRecord.getStandard());
             row.createCell(POSITION.TOTAL_MARKS.ordinal()).setCellValue(pdfRecord.getTotalMarks());
         }
+
+        sheet.setAutoFilter(new CellRangeAddress(
+                0, rowIdx - 1,   // rows
+                0, 10            // columns
+        ));
 
         final ByteArrayOutputStream out = new ByteArrayOutputStream();
         workbook.write(out);

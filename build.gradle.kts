@@ -30,6 +30,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-rest")
     implementation("org.springframework.boot:spring-boot-starter-hateoas")
     implementation("org.springframework.boot:spring-boot-starter-jersey")
+    implementation("org.springframework.boot:spring-boot-devtools")
     implementation("technology.tabula:tabula:1.0.5")
     implementation("org.apache.commons:commons-lang3:3.20.0")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")

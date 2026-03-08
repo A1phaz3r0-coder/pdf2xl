@@ -14,11 +14,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-@Controller("/api/v1/")
+@RestController
+@RequestMapping("/api/v1")
 public class PDFController {
 
     private static final Logger LOG = LoggerFactory.getLogger(PDFController.class);
@@ -28,13 +30,18 @@ public class PDFController {
     @Autowired
     private PdfRecordService pdfRecordService;
 
-    @GetMapping("records/{domicile}")
+    @GetMapping()
+    public String helloWorld() {
+        return "hello world";
+    }
+
+    @GetMapping("/records/{domicile}")
     public ResponseEntity<List<PDFRecord>> generateExcel(@PathVariable("domicile") String domicile) {
         return ResponseEntity.ok().body(pdfRecordService.findAllByDomicile(domicile));
     }
 
-    @GetMapping("excel/")
-    public ResponseEntity<InputStreamResource> getExcelForDomicile(@PathParam(value = "Uttarakhand") final String domicile) {
+    @GetMapping("/excel")
+    public ResponseEntity<InputStreamResource> getExcelForDomicile(@PathParam(value = "state") final String domicile) {
         try {
             final InputStreamResource file = new InputStreamResource(excelService.generateExcel(domicile));
             return ResponseEntity.ok()
