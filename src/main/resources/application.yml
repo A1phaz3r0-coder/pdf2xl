@@ -19,3 +19,7 @@ spring:
       hibernate.cache.use_second_level_cache: false
       hibernate.cache.use_structured_entries: false
       hibernate.cache.use_minimal_puts: false
+
+server:
+  address: 0.0.0.0
+  port: 8080
